@@ -1,0 +1,15 @@
+#!C:\ProgramData\Anaconda3\python.exe
+print("Content-Type:text/html\n\n")
+
+import cgi
+import os
+import webbrowser as wb
+
+val = cgi.FieldStorage()
+usr_dir=val.getvalue("dir")
+php=val.getvalue("php")
+print(usr_dir+" "+php)
+os.system('rmdir /s /q usr_files\\'+usr_dir)
+os.system('del /q C:\\xampp\\htdocs\\usr_tmp_files\\'+php)
+
+print("<HTML><HEAD><TITLE>LEAVE</TITLE></HEAD><BODY STYLE='background-color:#12232E; color:white;'><H2 ALIGN='center'>OnLangue</H2><BR><P ALIGN='center'><B>** Thank You for using OnLangue **</B><BR><A HREF='welcome.html' STYLE='color:white;'>Click here to leave & goto main page</A></P><SCRIPT TYPE='text/javascript'>window.alert('Deleted all files');window.history.go(-3)</SCRIPT></BODY></HTML>")

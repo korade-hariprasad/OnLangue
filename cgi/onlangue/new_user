@@ -1,0 +1,43 @@
+#!C:\ProgramData\Anaconda3\python.exe
+print("Content-Type:text/html\n\n")
+print("<HTML><HEAD><TITLE>NEW USER</TITLE></HEAD><BODY>")
+
+import cgi
+import webbrowser as wb
+import pyodbc as db
+import os
+
+spc=[' ','!','@','#','$','%','^','&','*','(',')','-','=','+','`','~','>','<',':',';','"','\'','\\','{','}','[',']','?','/','*','.']
+val = cgi.FieldStorage()
+username = val.getvalue("user_n")
+password = val.getvalue("psrd_n")
+
+for s in spc:
+ if s in username:
+  print('<SCRIPT>window.alert("Username cannot contain space or special characters except underscore (_). Sorry cannot create user. ");window.history.back();</SCRIPT>')
+ else:
+  None
+
+
+con = db.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Hari\Documents\compiler_user.accdb;')
+cur = con.cursor()
+cur.execute("SELECT u_name FROM users;")
+nms=cur.fetchall()
+con.close()
+
+n=[]
+for f in nms:
+ n.append(f[0])
+
+if username in n:
+ print('<SCRIPT>window.alert("Username already Exists.Try another name");window.history.back();</SCRIPT>')
+else:
+ con1 = db.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Hari\Documents\compiler_user.accdb;')
+ cur1 = con1.cursor()
+ cur1.execute("INSERT INTO users(u_name,password) VALUES('"+username+"','"+password+"');")
+ con1.commit()
+ con1.close()
+ os.system('mkdir usr_files\\'+username)
+ print('<SCRIPT>window.alert("User created successfully. Please login");window.history.back();</SCRIPT>')
+
+print('</BODY></HTML>')

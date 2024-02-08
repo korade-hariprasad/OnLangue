@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+ <TITLE>Welcome !!</TITLE>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" type="text/css" href="welcome.css">
+</HEAD>
+<BODY>
+<div class="limiter">
+  <div class="container-login100" style="background-image: url('welcome_bg.jpg');">
+   <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54"><BR><BR>
+    <H2 ALIGN="center">OnLangue</H2><BR><BR>
+    <form class="login100-form" ACTION="..\cgi-bin\onlangue\new_user" METHOD="POST">
+     <span class="login100-form-title p-b-49">New User</span><BR>
+      <div class="wrap-input100">
+       <input class="input100" type="text" name="user_n" placeholder="New Username" required />
+       <span class="focus-input100"></span>
+      </div><BR>
+      <div class="wrap-input100">
+       <input class="input100" type="password" name="psrd_n" placeholder="Password" required />
+       <span class="focus-input100"></span>
+      </div><BR>
+      <div class="container-login100-form-btn">
+       <div class="wrap-login100-form-btn">
+        <div class="login100-form-bgbtn"></div>
+         <button class="login100-form-btn">SIGN UP</button>       
+       </div>
+      </div>
+    </form><BR><BR>
+    <form class="login100-form" ACTION="..\cgi-bin\onlangue\user_login" METHOD="POST">
+     <span class="login100-form-title p-b-49">Existing User</span><BR>
+      <div class="wrap-input100">
+       <input class="input100" type="text" name="user_e" placeholder="Existing Username" required />
+       <span class="focus-input100"></span>
+      </div><BR>
+      <div class="wrap-input100">
+       <input class="input100" type="password" name="psrd_e" placeholder="Password" required />
+       <span class="focus-input100"></span>
+      </div><BR>
+      <div class="container-login100-form-btn">
+       <div class="wrap-login100-form-btn">
+        <div class="login100-form-bgbtn"></div>
+         <button class="login100-form-btn">LOGIN</button>       
+       </div>
+      </div>
+    </form><BR><BR>
+   </div>
+  </div>
+ </div>
+</BODY>
+</HTML>

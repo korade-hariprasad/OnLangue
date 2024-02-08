@@ -1,0 +1,102 @@
+#!C:\ProgramData\Anaconda3\python.exe
+print("Content-Type:text/html\n\n")
+print('<HTML><HEAD><TITLE>OnLangue-Output</TITLE><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" type="text/css" href="\main1.css"></HEAD><BODY>')
+
+import cgi
+import subprocess as sp
+import os
+import pyodbc as db
+import webbrowser as wb
+
+val = cgi.FieldStorage()
+lang = val.getvalue("language")
+code = val.getvalue("code")
+paras = val.getvalue("parameters")
+dir_name = val.getvalue("username")
+
+a=os.listdir(os.getcwd()+'\\usr_files')
+if dir_name in a:
+ None
+else:
+ print(sp.getstatusoutput("mkdir usr_files\\"+dir_name)[1])
+
+print('''<div class="limiter">
+ <div class="container-login100">
+  <div class="wrap-login100a">
+   <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54"><BR><BR>
+    <H2 ALIGN="center">OnLangue</H2><BR><BR>
+     <P ALIGN="center"><B>* PLEASE NOTE *</B><BR>
+     We respect your <U>privacy</U> ,yet we store your file <U>temporarily</U> until we compile your code. You can delete all your files                   anytime<BR></P><BR><BR>''')
+
+if(lang == "Java"):
+ f_name = val.getvalue("f_name")+".java"
+ cmd = "java"
+elif(lang == "Python"):
+ f_name = val.getvalue("f_name")+".py"
+ cmd = "python"
+elif(lang == "c"):
+ f_name = val.getvalue("f_name")+".c"
+ cmd = "gcc"
+elif(lang == "cpp"):
+ f_name = val.getvalue("f_name")+".cpp"
+ cmd = "g++"
+elif(lang == "HTML"):
+ f_name = val.getvalue("f_name")+".html"
+elif(lang == "php"):
+ f_name = val.getvalue("f_name")+".php"
+code=code.replace("\\n","")
+
+F=open("usr_files\\"+dir_name+"\\"+f_name,"w")
+F.write(code)
+F.close()
+
+if ('\\\\' in code):
+ print('<P ALIGN="center" STYLE="color:red;">Sorry you have used \\\\ in your code.Please remove that & try again</P><BR>')
+else:
+ if lang=="Python" or lang=="Java":
+  if(paras=="none"):
+   run = cmd+" "+f_name
+  else:
+   run = cmd+" "+f_name+" "+paras
+  res = sp.getstatusoutput("cd usr_files\\"+dir_name+" &&"+run)
+  output=res[1]
+  print('''
+  <table cellspacing="5" style="margin:auto;">
+     <tr><td>Output :</td><td>File : {}</td></tr>
+     <tr><td><TEXTAREA class="input100" READONLY>{}</TEXTAREA></td><td><TEXTAREA class="input100" READONLY>{}</TEXTAREA></td></tr>
+  </table><BR>
+  '''.format(f_name,output,code))
+ elif lang=="c" or lang=="cpp":
+  if(paras=="none"):
+   run = cmd+' -o '+f_name.replace(".c","")+' '+f_name+' && '+f_name.replace(".c","")
+  else:
+   run = cmd+' -o '+f_name.replace(".c","")+' '+f_name+' && '+f_name.replace(".c","")+' '+paras
+  res = sp.getstatusoutput("cd usr_files\\"+dir_name+" &&"+run)
+  output=res[1]
+  print('''
+  <table cellspacing="5" style="margin:auto;">
+     <tr><td>Output :</td><td>File : {}</td></tr>
+     <tr><td><TEXTAREA class="input100" READONLY>{}</TEXTAREA></td><td><TEXTAREA class="input100" READONLY>{}</TEXTAREA></td></tr>
+  </table><BR>
+  '''.format(f_name,output,code))
+ elif lang=="HTML": 
+  wb.open("usr_files\\"+dir_name+'\\'+f_name)
+ elif lang=="php":
+  to=sp.getstatusoutput('COPY C:\\xampp\\cgi-bin\\usr_files\\'+dir_name+'\\'+f_name+' C:\\xampp\\htdocs\\usr_tmp_files')
+  wb.open('http:localhost\\usr_tmp_files\\'+f_name)
+
+print('<P>If you <B>cannot view</B> your files from below link, <U>copy the link & paste them in new tab\'s search bar</U>')
+print('<BR><br>Your Files :<BR>')
+files=os.listdir("usr_files\\"+dir_name)
+for f in files:
+ loc = 'usr_files\\'+dir_name+'\\'+f
+ print('&nbsp;<A HREF="'+loc+'" STYLE="color:#7FFF00;" TARGET="_self" DOWNLOAD="'+f+'">'+f+'</A>&nbsp;&nbsp;&nbsp;')
+
+print('''</P><FORM ACTION="del_dir_cgi" ALIGN="center"><INPUT TYPE="hidden" NAME="dir" VALUE="{}" READONLY></INPUT><INPUT TYPE="hidden" NAME="php" VALUE="{}" READONLY></INPUT>
+    <div class="container-login100-form-btn">
+     <div class="wrap-login100-form-btn">
+      <div class="login100-form-bgbtn"></div>
+       <button class="login100-form-btn" type="submit">DELETE FILES & LOGOUT</button>       
+     </div>
+    </div><BR></FORM>'''.format(dir_name,f_name))
+print('</div></div></div></div></BODY></HTML>')
